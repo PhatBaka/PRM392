@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -28,17 +29,31 @@ public class LoginActivity extends AppCompatActivity {
 
         //Set event on click for button
         btnLogin.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 if (txtUsername.getText().toString().equals("admin")
                         && txtPassword.getText().toString().equals("123456")) {
                     Toast.makeText(LoginActivity.this, "Login successfully", Toast.LENGTH_SHORT).show();
-                }
-                else {
+
+                    //Pass data to HomeActivity
+                    Intent homeActivity = new Intent(LoginActivity.this, HomeActivity.class);
+                    homeActivity.putExtra("USERNAME", txtUsername.getText().toString());
+                    startActivity(homeActivity);
+                } else {
                     Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (!txtUsername.getText().toString().equals("")
+                && !txtPassword.getText().toString().equals("")) {
+            txtUsername.setText("");
+            txtPassword.setText("");
+        }
+
     }
 }
